@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>My Todo List</h1>
+
+    <!-- Display the tasks -->
+    <ul>
+        {% for task in tasks %}
+            <li>
+                {% if task['completed'] %}
+                    <s>{{ task['title'] }}</s> <!-- Strike-through for completed tasks -->
+                {% else %}
+                    {{ task['title'] }}
+                {% endif %}
+
+                <!-- Form to mark task as complete -->
+                <form action="{{ url_for('complete', task_id=task['id']) }}" method="post" style="display:inline;">
+                    <button type="submit">Complete</button>
+                </form>
+
+                <!-- Form to delete task -->
+                <form action="{{ url_for('delete', task_id=task['id']) }}" method="post" style="display:inline;">
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Form to add a new task -->
+    <h2>Add a New Task</h2>
+    <form action="{{ url_for('add') }}" method="post">
+        <input type="text" name="task" placeholder="Enter new task" required>
+        <button type="submit">Add Task</button>
+    </form>
+</body>
+</html>
